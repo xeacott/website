@@ -3,7 +3,6 @@ import os
 import logging
 
 
-
 def get_root_logger(logger_name, filename=None):
     ''' get the logger object '''
     logger = logging.getLogger(logger_name)
