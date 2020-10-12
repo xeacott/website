@@ -1,7 +1,7 @@
 import pytest
-from website.app import create_app
+from website.app import Website
 
 @pytest.fixture()
 def app():
-    app = create_app()
-    return app
+    app = Website()
+    return app.website
