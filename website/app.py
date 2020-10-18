@@ -1,42 +1,44 @@
 '''
 This file initializes your application and brings together all of the various components.
 '''
+
+# Standard Imports
+# none
+
+# 3rd Party Imports
 from flask import Flask
-from website import views, models, forms
-from flask_pymongo import PyMongo
+
+# Relative Imports
+from website.views import public_views
 
 
-class Website(Flask):
+class Website(Flask, object):
     '''
     Class to store main flask and mongo instance.
     '''
-    def __init__(self):
-        super(Website, self).__init__(__name__)
+    def __init__(self, parent=None):
+        super(Website, self).__init__(__name__, parent)
         self.website = None
-        self.mongo = None
+        self.db = None
         self.create_app()
-        self.create_db()
 
     def create_app(self):
         '''
         Create instance of application.
         '''
         app = Flask(__name__)
-        app.register_blueprint(views.page)
         app.config.from_object('config')
         app.config.from_pyfile('instance_config.py')
-
         self.website = app
 
-    def create_db(self):
+    def init(self):
         '''
-        Create instance of database.
+        Create the environment for the website to operate inside of.
         '''
-        mongo = PyMongo(self.website)
-        self.mongo = mongo
+        self.website.register_blueprint(public_views.page)
 
+        self.run()
 
-if __name__ == '__main__':
-    app = Website().website
-    app.config["LOG"].info('Starting environment')
-    app.run(host='127.0.0.1')
+    def run(self):
+        self.website.config["LOG"].info("Starting environment")
+        self.website.run(host="127.0.0.1")
