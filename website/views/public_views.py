@@ -4,11 +4,15 @@ It may be split into a package of its own (yourapp/views/) with
 related views grouped together into modules.
 '''
 from flask import Blueprint
+from website.db import MongoDB
 page = Blueprint('petes_meals', __name__)
 
 
 @page.route('/')
 def index():
+    mongo = MongoDB("test").get_db()
+    print(mongo)
+
     return "Index!"
 
 @page.route("/hello")
