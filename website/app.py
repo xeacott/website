@@ -15,19 +15,24 @@ class Website(Flask):
         self.website = None
         self.mongo = None
         self.create_app()
+        self.create_db()
 
     def create_app(self):
         '''
-        Create instance of application and mongo.
+        Create instance of application.
         '''
         app = Flask(__name__)
         app.register_blueprint(views.page)
         app.config.from_object('config')
         app.config.from_pyfile('instance_config.py')
-        mongo = PyMongo(app)
 
-        # Instance assignments
         self.website = app
+
+    def create_db(self):
+        '''
+        Create instance of database.
+        '''
+        mongo = PyMongo(self.website)
         self.mongo = mongo
 
 
