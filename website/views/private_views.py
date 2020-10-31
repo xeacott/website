@@ -7,38 +7,23 @@ related views grouped together into modules.
 import functools
 from flask import Blueprint, flash, g, redirect, render_template, request, sessions, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
+from website.forms import LoginForm
 
 auth = Blueprint('auth', __name__)
 
 
 @auth.route('/auth/register', methods=('GET', 'POST'))
 def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        error = None
-
-        if not username:
-            error = 'Username is required.'
-        if not password:
-            error = 'Password is required.'
-
     return True
 
 
 @auth.route('/auth/login', methods=('GET', 'POST'))
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        error = None
-
-        if username is None:
-            error = 'Incorrect username.'
-
-        flash(error)
-
-    return render_template('auth/login.html')
+    form = LoginForm()
+    if form.validate_on_submit():
+        flash(f'Login requested for {form.username.data}, remember me {form.remember_me.data}')
+        return redirect("/")
+    return render_template('login.html', title='Sign In', form=form)
 
 
 # -------------------------
