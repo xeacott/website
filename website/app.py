@@ -9,7 +9,7 @@ This file initializes your application and brings together all of the various co
 from flask import Flask
 
 # Relative Imports
-from website.views import public_views
+from website.views import public_views, private_views
 
 
 class Website(Flask, object):
@@ -36,9 +36,10 @@ class Website(Flask, object):
         Create the environment for the website to operate inside of.
         '''
         self.website.register_blueprint(public_views.page)
+        self.website.register_blueprint(private_views.auth)
 
         self.run()
 
     def run(self):
         self.website.config["LOG"].info("Starting environment")
-        self.website.run(host="127.0.0.1")
+        self.website.run(host="127.0.0.1", port=5000)
