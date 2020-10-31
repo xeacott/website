@@ -5,4 +5,5 @@ pytest-flask
 pymongo~=3.11.0
 Werkzeug~=1.0.1
 flask-wtf
+stripe
 # flask-wtf will be used until angular is dropped in
